@@ -13,6 +13,10 @@
 ../configure --target-list=x86_64-softmmu --enable-debug
 make -j$(nproc)
 ```
+- (Optional) Build with `pqc_accel.c` only.
+```
+ninja libsystem.a.p/hw_misc_pqc_accel.c.o`
+```
 
 2. Build kernal and image with Buildroot
 - `git clone --depth 1 https://github.com/buildroot/buildroot.git`
@@ -58,3 +62,12 @@ gdb qemu-system-x86_64
 (gdb) c
 ```
 
+## Manually verify the funcionalities.
+```
+lspci -v
+# 00:04.0 Class 00ff: 1af4:1054
+cat /sys/bus/pci/devices/0000:00:04.0/resource
+# 0x00000000febf1000 ... <- BAR0
+busybox devmem 0xfebf1000 32 # Read BAR0+0
+busybox devmem 0xfebf1000 32 1 # Write 1 to BAR0+0
+```

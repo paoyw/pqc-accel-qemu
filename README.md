@@ -64,12 +64,13 @@ Start and wait for gdb.
   -append "root=/dev/sda console=ttyS0"  \
   -nographic \
   -device pqc_accel \
-  -s -S
+  -s \
+  -S # if want to stop, before boot
 ```
 
 Connect with gdb.
 ```
-gdb qemu-system-x86_64
+gdb ./qemu/build/qemu-system-x86_64
 (gdb) target remote :1234
 (gdb) b pqc_mmio_write
 (gdb) c

@@ -1,15 +1,28 @@
 # pqc-accel-qemu
 
 ## Build
+1. Build and install `liboqs`
+- Reference: https://openquantumsafe.org/liboqs/getting-started.html
+```
+git clone -b main https://github.com/open-quantum-safe/liboqs.git
+cd liboqs
+mkdir build && cd build
+cmake -GNinja -DBUILD_SHARED_LIBS=ON ..
+ninja
+sudo ninja install
+sudo ldconfig
+pkg-config --modversion liboqs
+```
 
-1. Build QEMU with The modified driver
+2. Build QEMU with The modified driver
 
 - `git clone --depth 1 https://gitlab.com/qemu-project/qemu.git`
-- Softlink the `hw/misc/pqc_accel.c` with `qemu/hw/misc/pqc_accel.c`, once.
-- Append the bulid rule in `hw/misc/meson.build` to `qemu/hw/misc/meson.build`.
+- Copy `qemu/hw/misc/pqc_accel.c` to corresponding place in qemu.
+- Copy `qemu/hw/misc/meson.build` to corresponding place in qemu.
 - Build QEMU for x86-64 using the following command.
 ```
-# pwd: qemu/build/
+# qemu/
+mkdir build && cd build
 ../configure --target-list=x86_64-softmmu --enable-debug
 make -j$(nproc)
 ```
@@ -18,7 +31,7 @@ make -j$(nproc)
 ninja libsystem.a.p/hw_misc_pqc_accel.c.o`
 ```
 
-2. Build kernal and image with Buildroot
+3. Build kernal and image with Buildroot
 - `git clone --depth 1 https://github.com/buildroot/buildroot.git`
 - Setup and build Buildroot.
 ```

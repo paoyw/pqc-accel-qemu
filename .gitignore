@@ -1,4 +1,5 @@
-qemu/
+qemu/*
 buildroot/
+liboqs/
 
 *.swp
